@@ -1,0 +1,52 @@
+{
+  "cities": [
+    {
+      "cityName": "Chhatarpur",
+      "country": "India",
+      "emoji": "🇮🇳",
+      "date": "2024-07-15T17:28:55.038Z",
+      "notes": "",
+      "position": {
+        "lat": "24.630866866001696",
+        "lng": "79.34619436462367"
+      },
+      "id": 2
+    },
+    {
+      "cityName": "Dolpa",
+      "country": "Nepal",
+      "emoji": "🇳🇵",
+      "date": "2024-07-15T17:40:31.919Z",
+      "notes": "",
+      "position": {
+        "lat": "29.57318528021493",
+        "lng": "82.88181601659977"
+      },
+      "id": 4
+    },
+    {
+      "cityName": "Ahmednagar",
+      "country": "India",
+      "emoji": "🇮🇳",
+      "date": "2024-07-15T17:40:35.653Z",
+      "notes": "",
+      "position": {
+        "lat": "18.706975562413632",
+        "lng": "75.4875875879946"
+      },
+      "id": 6
+    },
+    {
+      "cityName": "Rajouri",
+      "country": "India",
+      "emoji": "🇮🇳",
+      "date": "2024-07-15T17:40:37.580Z",
+      "notes": "",
+      "position": {
+        "lat": "33.13865569926054",
+        "lng": "74.51526939154917"
+      },
+      "id": 7
+    }
+  ]
+}
