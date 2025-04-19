@@ -1,12 +1,12 @@
-.logo {
-  height: 5.2rem;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.4rem;
 }
-.logoName {
-  /* scale: ; */
-  /* height: 5.2rem; */
-  width: 90px;
-  /* height: 150px; */
-  /* object-fit: cover; */
-  /* object-position: 25% 25%; */
-  transform: scale(1.6) translate(20%, 30%);
+.logo {
+  height: 6rem;
+}
+.name {
+  margin-bottom: 0px;
 }
