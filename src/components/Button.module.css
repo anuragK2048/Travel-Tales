@@ -40,11 +40,12 @@
   z-index: 1000;
   font-size: 1.4rem;
   color: var(--color-dark--1);
-  background-color: rgb(230, 224, 215);
+  background-color: #e6e0d7;
   box-shadow: 0 0.4rem 1.2rem rgba(36, 42, 46, 0.16);
   border-left: "20px";
   margin-left: auto;
   flex-grow: 1;
+  height: 100%;
 }
 
 .darktheme {
@@ -52,11 +53,12 @@
   /* position: absolute; */
   z-index: 1000;
   font-size: 1.4rem;
-  background-color: rgb(64, 60, 60);
+  background-color: #403c3c;
   box-shadow: 0 0.4rem 1.2rem rgba(36, 42, 46, 0.16);
   border-left: "20px";
   margin-left: auto;
   flex-grow: 1;
+  max-height: 100%;
 }
 
 .cancel {
@@ -70,5 +72,6 @@
   font-weight: 600;
   background: none;
   border: 1px solid currentColor;
-  background-color: rgba(59, 156, 168, 0.7);
+  background-color: var(--color-brand--2);
+  color: black;
 }

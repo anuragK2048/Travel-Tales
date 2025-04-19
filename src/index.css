@@ -326,3 +326,33 @@ a {
 body .mapboxgl-map {
   line-height: 1.4;
 }
+
+.theme-toggle {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.theme-toggle--dark {
+  background-color: #403c3c;
+  color: #ffffff;
+}
+
+.theme-toggle--light {
+  background-color: #e6e0d7;
+  color: #333333;
+}
+
+/* Make the button larger on mobile for easier touch */
+@media screen and (max-width: 767px) {
+  .theme-toggle {
+    height: 44px;
+    width: 44px;
+  }
+}

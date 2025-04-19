@@ -1,6 +1,6 @@
 // "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Form.module.css";
 import Button from "./Button";
 import ButtonBack from "./ButtonBack";
@@ -31,8 +31,10 @@ function Form() {
   const [notes, setNotes] = useState("");
   const [isValidCity, setIsValidCity] = useState(true);
   const [isLoading2, setIsLoading2] = useState(true);
+  const [uploadedImages, setUploadedImages] = useState([]);
   const [clickedlat, clickedlng] = useParams("clickedlat", "clickedlng");
   const { addCity, isLoading, setMapSearchInputValue } = useCities();
+
   useEffect(
     function () {
       try {
@@ -88,6 +90,7 @@ function Form() {
         lat: clickedlat,
         lng: clickedlng,
       },
+      uploadedImages,
     };
     if (!cityName) {
       alert("enter city name");
@@ -146,6 +149,8 @@ function Form() {
         />
       </div>
 
+      <FileUploader setUploadedImages={setUploadedImages} />
+
       <div className={styles.buttons}>
         <Button type="primary">Add</Button>
         <Button
@@ -165,3 +170,79 @@ function Form() {
 }
 
 export default Form;
+
+function FileUploader(uploadedImages, setUploadedImages) {
+  const [preview, setPreview] = useState(null);
+  const fileRef = useRef(null);
+
+  function handleFileUpload(e) {
+    const uploadedFile = e.target.files[0];
+    if (!uploadedFile) return;
+    if (!uploadedFile.type.startsWith("image/")) {
+      alert("Only images can be uploaded!");
+      return;
+    }
+
+    const fileUrl = URL.createObjectURL(uploadedFile); // http://localhost:5173/ee54ad42-5da2-44c9-988d-9dc78fcb8769
+
+    setPreview(fileUrl);
+    setUploadedImages(() => [...uploadedImages, uploadedFile]);
+  }
+
+  useEffect(() => {
+    // This only runs when preview changes and isn't null
+    if (preview) {
+      // Return cleanup function that will run when preview changes or component unmounts
+      return () => URL.revokeObjectURL(preview);
+    }
+  }, [preview]);
+
+  return (
+    <div className={styles.fileContainer}>
+      <div
+        className={styles.addPicBtn}
+        onClick={() => {
+          fileRef.current.click();
+        }}
+      >
+        {" "}
+        + UPLOAD IMAGE
+      </div>
+      <input
+        type="file"
+        ref={fileRef}
+        onChange={handleFileUpload}
+        style={{ display: "none" }}
+      />
+      {preview && (
+        <div className="file-preview">
+          <img
+            src={preview}
+            alt="Preview"
+            style={{ maxWidth: "100%", maxHeight: "30px" }}
+          />
+          {/* {selectedFile.type.startsWith("image/") ? (
+            // If it's an image
+            ...
+          ) : selectedFile.type.startsWith("video/") ? (
+            // If it's a video
+            <video controls style={{ maxWidth: "100%", maxHeight: "30px" }}>
+              <source src={preview} type={selectedFile.type} />
+              Your browser does not support video playback.
+            </video>
+          ) : (
+            // For other file types
+            <div className="file-info">
+              <p>File: {selectedFile.name}</p>
+              <p>Size: {(selectedFile.size / 1024).toFixed(2)} KB</p>
+              <p>Type: {selectedFile.type}</p>
+              <a href={preview} download={selectedFile.name}>
+                Download
+              </a>
+            </div>
+          )} */}
+        </div>
+      )}
+    </div>
+  );
+}

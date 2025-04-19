@@ -42,3 +42,18 @@
   font-family: inherit;
   font-size: 1.2rem;
 }
+
+.addPicBtn {
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-family: inherit;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  background-color: var(--color-brand--1);
+  color: black;
+}
+
+.fileContainer {
+  display: flex;
+}
