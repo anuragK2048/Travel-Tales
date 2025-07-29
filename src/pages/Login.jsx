@@ -1,5 +1,5 @@
 import { useAuth } from "../contexts/FakeAuthContext";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import PageNav from "../components/PageNav";
@@ -11,16 +11,28 @@ export default function Login() {
   // PRE-FILL FOR DEV PURPOSES
   const [email, setEmail] = useState("test@example.com");
   const [password, setPassword] = useState("1q2w3e4");
-  function handleAuthSubmit(e) {
-    e.preventDefault();
-    if (email && password) login(email, password);
-  }
+
+  const handleAuthSubmit = useCallback(
+    (e) => {
+      // e.preventDefault();
+      if (email && password) login(email, password);
+    },
+    [email, login, password]
+  );
+
   useEffect(
     function () {
       if (isAuthenticated) navigate("/app", { replace: true });
     },
-    [isAuthenticated]
+    [isAuthenticated, navigate]
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      handleAuthSubmit();
+    }, 500);
+  }, [handleAuthSubmit]);
+
   return (
     <main className={styles.login}>
       <PageNav />
