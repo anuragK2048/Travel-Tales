@@ -1,26 +1,30 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../services/supabaseClient";
 
 const CitiesContext = createContext();
-// const BASE_URL = "http://localhost:3200";
-const BASE_URL = import.meta.env.VITE_glitchJSONserver;
 
 function CitiesProvider({ children }) {
   const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentCity, setCurrentCity] = useState([]);
+  const [currentCity, setCurrentCity] = useState({});
   const [refetch, setRefetch] = useState(false);
   const [mapSearchInputValue, setMapSearchInputValue] = useState("");
+
   useEffect(
     function () {
       async function fetchCities() {
         try {
           setIsLoading(true);
-          const res = await fetch(`${BASE_URL}/cities`);
-          if (res.status !== 200) throw new Error("Can't fetch cities");
-          const data = await res.json();
+          // Select all cities from the 'cities' table
+          const { data, error } = await supabase.from("cities").select("*");
+
+          if (error) {
+            console.error(error);
+            throw new Error("Could not fetch cities");
+          }
           setCities(data);
         } catch (err) {
-          alert(err);
+          alert(err.message);
         } finally {
           setIsLoading(false);
         }
@@ -31,14 +35,23 @@ function CitiesProvider({ children }) {
   );
 
   async function getCities(id) {
+    if (!id) return;
     try {
       setIsLoading(true);
-      const res = await fetch(`${BASE_URL}/cities/${id}`);
-      if (res.status !== 200) throw new Error("Can't fetch city details");
-      const data = await res.json();
+      // Select a specific city by its id
+      const { data, error } = await supabase
+        .from("cities")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error(error);
+        throw new Error("Could not fetch the city details");
+      }
       setCurrentCity(data);
     } catch (err) {
-      alert(err);
+      alert(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -52,19 +65,26 @@ function CitiesProvider({ children }) {
     }
     try {
       setIsLoading(true);
-      const res = await fetch(`${BASE_URL}/cities`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cityObject),
-      });
-      const data = await res.json();
-      // setCities((c) => [...c, cityObject]);
-      setRefetch((cur) => !cur);
+      // Insert the new city object directly.
+      // Supabase handles the mapping of the JS object to the table row.
+      const { data, error } = await supabase
+        .from("cities")
+        .insert([cityObject])
+        .select()
+        .single();
+
+      if (error) {
+        console.error(error);
+        throw new Error("Could not add the new city");
+      }
+
+      // Manually update state or refetch
+      setCities((c) => [...c, data]);
       setCurrentCity(data);
+      // Or you can refetch the whole list
+      // setRefetch((cur) => !cur);
     } catch (err) {
-      alert(err);
+      alert(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -73,17 +93,20 @@ function CitiesProvider({ children }) {
   async function removeCity(id) {
     try {
       setIsLoading(true);
-      const res = await fetch(`${BASE_URL}/cities/${id}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      // setCities((c) => [...c, cityObject]);
-      setRefetch((cur) => !cur);
-      // setCurrentCity(data);
+      // Delete a city by its id
+      const { error } = await supabase.from("cities").delete().eq("id", id);
+
+      if (error) {
+        console.error(error);
+        throw new Error("Could not remove the city");
+      }
+
+      // Manually update state to reflect removal
+      setCities((cities) => cities.filter((city) => city.id !== id));
     } catch (err) {
-      alert(err);
+      alert(err.message);
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   }
 
@@ -106,9 +129,10 @@ function CitiesProvider({ children }) {
 }
 
 function useCities() {
-  const cities1 = useContext(CitiesContext);
-  if (cities1 === undefined) throw new Error("Context used beyond its scope");
-  return cities1;
+  const context = useContext(CitiesContext);
+  if (context === undefined)
+    throw new Error("CitiesContext was used outside the CitiesProvider");
+  return context;
 }
 
 export { CitiesProvider, useCities };
