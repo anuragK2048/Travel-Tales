@@ -4,7 +4,7 @@ import PageNav from "../components/PageNav";
 import { useCities } from "../contexts/CitiesContext";
 import Message from "../components/Message";
 import User from "../components/User";
-import Descretion from "../components/descretion";
+import Descretion from "../components/Descretion";
 
 function Memories() {
   const [isLoading, setIsLoading] = useState(true);
