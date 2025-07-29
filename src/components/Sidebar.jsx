@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import AppNav from "./AppNav";
 import Logo from "./Logo";
-import Sidebar_footer from "./Sidebar_footer";
+import SidebarFooter from "./SidebarFooter";
 import styles from "./Sidebar.module.css";
 
 function Sidebar() {
@@ -11,7 +11,7 @@ function Sidebar() {
       <AppNav />
       <Outlet />
 
-      <Sidebar_footer />
+      <SidebarFooter />
     </div>
   );
 }
