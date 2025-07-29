@@ -116,7 +116,7 @@ function MapWithGeocoder({ mapPosition }) {
             >
               <img
                 style={{ height: "50px", width: "50px" }}
-                src="../public/mapMarker.png"
+                src="/mapMarker.png"
                 alt="marker"
               />
             </Marker>
@@ -126,7 +126,7 @@ function MapWithGeocoder({ mapPosition }) {
           <Marker longitude={markLng} latitude={markLat}>
             <img
               style={{ height: "50px", width: "50px" }}
-              src="../public/mapMarker.png"
+              src="/mapMarker.png"
               alt="marker"
             />
           </Marker>
